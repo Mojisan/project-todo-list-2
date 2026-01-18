@@ -1,5 +1,14 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import TodoListPage from "./pages/todo-list-page/TodoListPage"
+
 function App() {
-  return <></>
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<TodoListPage />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App
