@@ -2,6 +2,7 @@ import { Box, Button, Card, Flex, Modal, Text, Title } from "@mantine/core"
 import type { ITask } from "../../../../interface"
 import { useDisclosure } from "@mantine/hooks"
 import EditTaskForm from "../forms/EditTaskForm"
+import { useTasksStore } from "../../../../store/useTasksStore"
 
 interface ITaskCardProps {
   task: ITask
@@ -9,6 +10,7 @@ interface ITaskCardProps {
 }
 
 const TaskCard = ({ task, id }: ITaskCardProps) => {
+  const { deleteTask } = useTasksStore()
   const [taskOpened, taskHandlers] = useDisclosure(false)
   const [editOpened, editHandlers] = useDisclosure(false)
 
@@ -19,7 +21,7 @@ const TaskCard = ({ task, id }: ITaskCardProps) => {
           <Box>
             <Title order={4}>{task.title}</Title>
           </Box>
-          <Box>
+          <Flex direction='row' gap='md'>
             <Button
               onClick={(e) => {
                 e.stopPropagation()
@@ -28,7 +30,17 @@ const TaskCard = ({ task, id }: ITaskCardProps) => {
             >
               Edit
             </Button>
-          </Box>
+
+            <Button
+              color='red'
+              onClick={(e) => {
+                e.stopPropagation()
+                deleteTask(id)
+              }}
+            >
+              Delete
+            </Button>
+          </Flex>
         </Flex>
       </Card>
 
@@ -47,7 +59,7 @@ const TaskCard = ({ task, id }: ITaskCardProps) => {
         centered
         title='Edit Task'
       >
-        <EditTaskForm id={id} closed={editHandlers.close}/>
+        <EditTaskForm id={id} closed={editHandlers.close} />
       </Modal>
     </>
   )

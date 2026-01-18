@@ -10,6 +10,7 @@ type TasksAction = {
   addTask: (task: ITask) => void
   loadTasks: () => void
   editTask: (id: number, task: ITask) => void
+  deleteTask: (id: number) => void
 }
 
 const initialState: TasksState = {
@@ -57,7 +58,21 @@ export const useTasksStore = create<TasksState & TasksAction>((set, get) => ({
 
       get().loadTasks()
     } catch (error) {
-      throw Error("Failed to edit tasks")
+      throw Error("Failed to edit task")
+    }
+  },
+  deleteTask: (id: number) => {
+    try {
+      get().loadTasks()
+
+      const tasks: ITask[] = get().taskRecords
+      const updateTasks = tasks.filter((_, index) => id !== index)
+
+      localStorage.setItem(TASKS_KEY, JSON.stringify(updateTasks))
+
+      get().loadTasks()
+    } catch (error) {
+      throw Error("Failed to delete task")
     }
   },
 }))
