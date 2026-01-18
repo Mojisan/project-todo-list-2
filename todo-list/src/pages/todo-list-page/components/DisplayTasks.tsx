@@ -9,7 +9,7 @@ const DisplayTasks = () => {
     <Flex direction='column' gap='md'>
       {taskRecords.map((task, index) => (
         <Box key={index} w={400}>
-          <TaskCard task={task} />
+          <TaskCard task={task} id={index} />
         </Box>
       ))}
     </Flex>

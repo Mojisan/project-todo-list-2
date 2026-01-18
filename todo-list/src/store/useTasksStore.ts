@@ -9,6 +9,7 @@ type TasksState = {
 type TasksAction = {
   addTask: (task: ITask) => void
   loadTasks: () => void
+  editTask: (id: number, task: ITask) => void
 }
 
 const initialState: TasksState = {
@@ -41,6 +42,22 @@ export const useTasksStore = create<TasksState & TasksAction>((set, get) => ({
       set({ taskRecords: transformedTasks })
     } catch (error) {
       throw Error("Failed to fetch tasks")
+    }
+  },
+  editTask: (id: number, task: ITask) => {
+    try {
+      get().loadTasks()
+
+      const tasks: ITask[] = get().taskRecords
+      const updateTasks = tasks.map((currentTask, index) =>
+        id === index ? task : currentTask,
+      )
+
+      localStorage.setItem(TASKS_KEY, JSON.stringify(updateTasks))
+
+      get().loadTasks()
+    } catch (error) {
+      throw Error("Failed to edit tasks")
     }
   },
 }))
