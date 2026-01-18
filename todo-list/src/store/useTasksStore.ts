@@ -4,6 +4,7 @@ import { TASKS_KEY } from "../constant"
 
 type TasksState = {
   taskRecords: ITask[]
+  keyword: string
 }
 
 type TasksAction = {
@@ -11,14 +12,17 @@ type TasksAction = {
   loadTasks: () => void
   editTask: (id: number, task: ITask) => void
   deleteTask: (id: number) => void
+  updateFilter: (keyword: string) => void
 }
 
 const initialState: TasksState = {
   taskRecords: [],
+  keyword: "",
 }
 
 export const useTasksStore = create<TasksState & TasksAction>((set, get) => ({
   ...initialState,
+
   addTask: (task: ITask) => {
     try {
       get().loadTasks()
@@ -33,18 +37,25 @@ export const useTasksStore = create<TasksState & TasksAction>((set, get) => ({
       throw Error("Failed to add task")
     }
   },
+
   loadTasks: () => {
     try {
+      const keyword = get().keyword
       const tasksString = localStorage.getItem(TASKS_KEY)
       const transformedTasks: ITask[] = tasksString
         ? JSON.parse(tasksString)
         : []
 
-      set({ taskRecords: transformedTasks })
+      const filterTasks = transformedTasks.filter((task) =>
+        task.title.toLowerCase().includes(keyword),
+      )
+
+      set({ taskRecords: filterTasks })
     } catch (error) {
       throw Error("Failed to fetch tasks")
     }
   },
+
   editTask: (id: number, task: ITask) => {
     try {
       get().loadTasks()
@@ -61,6 +72,7 @@ export const useTasksStore = create<TasksState & TasksAction>((set, get) => ({
       throw Error("Failed to edit task")
     }
   },
+
   deleteTask: (id: number) => {
     try {
       get().loadTasks()
@@ -74,5 +86,11 @@ export const useTasksStore = create<TasksState & TasksAction>((set, get) => ({
     } catch (error) {
       throw Error("Failed to delete task")
     }
+  },
+
+  updateFilter: (keyword: string) => {
+    set({ keyword })
+
+    get().loadTasks()
   },
 }))

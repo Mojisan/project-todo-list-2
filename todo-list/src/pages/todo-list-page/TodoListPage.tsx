@@ -3,6 +3,7 @@ import AddTaskForm from "./components/forms/AddTaskForm"
 import { useTasksStore } from "../../store/useTasksStore"
 import { useEffect } from "react"
 import DisplayTasks from "./components/DisplayTasks"
+import SearchTaskForm from "./components/forms/SearchTaskForm"
 
 const TodoListPage = () => {
   const { loadTasks } = useTasksStore()
@@ -20,6 +21,8 @@ const TodoListPage = () => {
       direction='column'
       gap='md'
     >
+      <SearchTaskForm />
+
       <AddTaskForm />
 
       <DisplayTasks />
