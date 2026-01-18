@@ -4,13 +4,17 @@ import { useTasksStore } from "../../store/useTasksStore"
 import { useEffect } from "react"
 import DisplayTasks from "./components/DisplayTasks"
 import SearchTaskForm from "./components/forms/SearchTaskForm"
+import { useStatusesStore } from "../../store/useStatusesStore"
+import AddStatusForm from "./components/forms/AddStatus"
 
 const TodoListPage = () => {
   const { loadTasks } = useTasksStore()
+  const { loadStatuses } = useStatusesStore()
 
   useEffect(() => {
     loadTasks()
-  }, [loadTasks])
+    loadStatuses()
+  }, [loadTasks, loadStatuses])
 
   return (
     <Flex
@@ -22,6 +26,8 @@ const TodoListPage = () => {
       gap='md'
     >
       <SearchTaskForm />
+
+      <AddStatusForm />
 
       <AddTaskForm />
 
