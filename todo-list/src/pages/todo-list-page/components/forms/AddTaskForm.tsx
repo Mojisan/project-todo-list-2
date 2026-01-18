@@ -10,10 +10,9 @@ import {
 import { useForm } from "@mantine/form"
 import type { ITask } from "../../../../interface"
 import { useTasksStore } from "../../../../store/useTasksStore"
-import { useEffect } from "react"
 
 const AddTaskForm = () => {
-  const { addTask, loadTasks } = useTasksStore()
+  const { addTask } = useTasksStore()
   const form = useForm<ITask>({
     initialValues: {
       title: "",
@@ -30,10 +29,6 @@ const AddTaskForm = () => {
 
     form.setValues({ title: "", content: "" })
   }
-
-  useEffect(() => {
-    loadTasks()
-  }, [loadTasks])
 
   return (
     <Paper shadow='md' p='xl'>
