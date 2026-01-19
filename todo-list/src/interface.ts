@@ -16,4 +16,5 @@ export interface ITag {
 export interface IFilterTask {
   keyword: string
   status: string
+  tags: string[]
 }

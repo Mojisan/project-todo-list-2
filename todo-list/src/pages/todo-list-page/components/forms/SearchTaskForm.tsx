@@ -1,16 +1,26 @@
-import { Button, Grid, Paper, Select, TextInput } from "@mantine/core"
+import {
+  Button,
+  Grid,
+  MultiSelect,
+  Paper,
+  Select,
+  TextInput,
+} from "@mantine/core"
 import { useTasksStore } from "../../../../store/useTasksStore"
 import type { IFilterTask } from "../../../../interface"
 import { useStatusesStore } from "../../../../store/useStatusesStore"
 import { useForm } from "@mantine/form"
+import { useTagsStore } from "../../../../store/useTagsStore"
 
 const SearchTaskForm = () => {
   const { updateFilter, filter } = useTasksStore()
   const { statusRecords } = useStatusesStore()
+  const { tagsRecords } = useTagsStore()
   const form = useForm<IFilterTask>({
     initialValues: {
-      keyword: filter.keyword,
-      status: filter.status,
+      keyword: filter.keyword || "",
+      status: filter.status || "",
+      tags: filter.tags || [],
     },
   })
 
@@ -35,6 +45,14 @@ const SearchTaskForm = () => {
               placeholder='Pick status'
               data={statusRecords}
               {...form.getInputProps("status")}
+            />
+          </Grid.Col>
+
+          <Grid.Col span={12}>
+            <MultiSelect
+              placeholder='Pick tags'
+              data={tagsRecords}
+              {...form.getInputProps("tags")}
             />
           </Grid.Col>
 

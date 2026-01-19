@@ -27,7 +27,7 @@ export const useTagsStore = create<TagsState & TagsAction>((set, get) => ({
       localStorage.setItem(TAGS_KEY, JSON.stringify(updateTags))
 
       get().loadTags()
-    } catch (error) {
+    } catch {
       throw Error("Failed to add tag")
     }
   },
@@ -38,7 +38,7 @@ export const useTagsStore = create<TagsState & TagsAction>((set, get) => ({
       const transformedTags: string[] = tagsString ? JSON.parse(tagsString) : []
 
       set({ tagsRecords: transformedTags })
-    } catch (error) {
+    } catch {
       throw Error("Failed to fetch tags")
     }
   },

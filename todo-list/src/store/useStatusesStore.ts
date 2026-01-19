@@ -28,7 +28,7 @@ export const useStatusesStore = create<StatusesState & StatusesAction>(
         localStorage.setItem(STATUSES_KEY, JSON.stringify(updateStatuses))
 
         get().loadStatuses()
-      } catch (error) {
+      } catch {
         throw Error("Failed to add status")
       }
     },
@@ -41,7 +41,7 @@ export const useStatusesStore = create<StatusesState & StatusesAction>(
           : []
 
         set({ statusRecords: transformedStatuses })
-      } catch (error) {
+      } catch {
         throw Error("Failed to fetch statuses")
       }
     },

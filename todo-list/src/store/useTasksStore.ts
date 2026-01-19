@@ -20,6 +20,7 @@ const initialState: TasksState = {
   filter: {
     keyword: "",
     status: "",
+    tags: [],
   },
 }
 
@@ -36,7 +37,7 @@ export const useTasksStore = create<TasksState & TasksAction>((set, get) => ({
       localStorage.setItem(TASKS_KEY, JSON.stringify(updateTasks))
 
       get().loadTasks()
-    } catch (error) {
+    } catch {
       throw Error("Failed to add task")
     }
   },
@@ -51,13 +52,15 @@ export const useTasksStore = create<TasksState & TasksAction>((set, get) => ({
 
       const filterTasks = transformedTasks.filter(
         (task) =>
-          (task.title.toLowerCase().includes(filter.keyword.toLowerCase()) ||
+          ((task.title.toLowerCase().includes(filter.keyword.toLowerCase()) ||
             filter.keyword === "") &&
-          (filter.status === task.status || filter.status === ""),
+            (filter.status === task.status || filter.status === "") &&
+            filter.tags.some((tag) => task.tags.includes(tag))) ||
+          filter.tags.length === 0,
       )
 
       set({ taskRecords: filterTasks })
-    } catch (error) {
+    } catch {
       throw Error("Failed to fetch tasks")
     }
   },
@@ -74,7 +77,7 @@ export const useTasksStore = create<TasksState & TasksAction>((set, get) => ({
       localStorage.setItem(TASKS_KEY, JSON.stringify(updateTasks))
 
       get().loadTasks()
-    } catch (error) {
+    } catch {
       throw Error("Failed to edit task")
     }
   },
@@ -89,7 +92,7 @@ export const useTasksStore = create<TasksState & TasksAction>((set, get) => ({
       localStorage.setItem(TASKS_KEY, JSON.stringify(updateTasks))
 
       get().loadTasks()
-    } catch (error) {
+    } catch {
       throw Error("Failed to delete task")
     }
   },
