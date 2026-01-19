@@ -3,6 +3,7 @@ import {
   Grid,
   InputLabel,
   Paper,
+  Select,
   Textarea,
   TextInput,
   Title,
@@ -10,13 +11,16 @@ import {
 import { useForm } from "@mantine/form"
 import type { ITask } from "../../../../interface"
 import { useTasksStore } from "../../../../store/useTasksStore"
+import { useStatusesStore } from "../../../../store/useStatusesStore"
 
 const AddTaskForm = () => {
   const { addTask } = useTasksStore()
+  const { statusRecords } = useStatusesStore()
   const form = useForm<ITask>({
     initialValues: {
       title: "",
       content: "",
+      status: "",
     },
 
     validate: {
@@ -27,7 +31,7 @@ const AddTaskForm = () => {
   const handleSubmitForm = async (values: ITask) => {
     await addTask(values)
 
-    form.setValues({ title: "", content: "" })
+    form.setValues({ title: "", content: "", status: "" })
   }
 
   return (
@@ -46,6 +50,16 @@ const AddTaskForm = () => {
             <InputLabel size='sm'>Content:</InputLabel>
 
             <Textarea {...form.getInputProps("content")} />
+          </Grid.Col>
+
+          <Grid.Col span={12}>
+            <InputLabel size='sm'>Status:</InputLabel>
+
+            <Select
+              placeholder='Pick status'
+              data={statusRecords}
+              {...form.getInputProps("status")}
+            />
           </Grid.Col>
 
           <Grid.Col span={12}>

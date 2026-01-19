@@ -1,8 +1,9 @@
-import { Box, Button, Card, Flex, Modal, Text, Title } from "@mantine/core"
+import { Box, Button, Card, Flex, Modal, Title } from "@mantine/core"
 import type { ITask } from "../../../../interface"
 import { useDisclosure } from "@mantine/hooks"
 import EditTaskForm from "../forms/EditTaskForm"
 import { useTasksStore } from "../../../../store/useTasksStore"
+import TaskDetailModal from "../TaskDetailModal"
 
 interface ITaskCardProps {
   task: ITask
@@ -50,7 +51,7 @@ const TaskCard = ({ task, id }: ITaskCardProps) => {
         centered
         title={task.title}
       >
-        <Text>Content: {task.content}</Text>
+        <TaskDetailModal task={task} />
       </Modal>
 
       <Modal

@@ -1,7 +1,15 @@
-import { Grid, InputLabel, TextInput, Textarea, Button } from "@mantine/core"
+import {
+  Grid,
+  InputLabel,
+  TextInput,
+  Textarea,
+  Button,
+  Select,
+} from "@mantine/core"
 import { useTasksStore } from "../../../../store/useTasksStore"
 import { useForm } from "@mantine/form"
 import type { ITask } from "../../../../interface"
+import { useStatusesStore } from "../../../../store/useStatusesStore"
 
 interface IEditTaskFormProps {
   id: number
@@ -10,10 +18,12 @@ interface IEditTaskFormProps {
 
 const EditTaskForm = ({ id, closed }: IEditTaskFormProps) => {
   const { editTask, taskRecords } = useTasksStore()
+  const { statusRecords } = useStatusesStore()
   const form = useForm<ITask>({
     initialValues: {
       title: taskRecords[id].title,
       content: taskRecords[id].content,
+      status: taskRecords[id].status,
     },
 
     validate: {
@@ -24,7 +34,7 @@ const EditTaskForm = ({ id, closed }: IEditTaskFormProps) => {
   const handleSubmitForm = async (values: ITask) => {
     await editTask(id, values)
 
-    form.setValues({ title: "", content: "" })
+    form.setValues({ title: "", content: "", status: "" })
 
     closed()
   }
@@ -42,6 +52,16 @@ const EditTaskForm = ({ id, closed }: IEditTaskFormProps) => {
           <InputLabel size='sm'>Content:</InputLabel>
 
           <Textarea {...form.getInputProps("content")} />
+        </Grid.Col>
+
+        <Grid.Col span={12}>
+          <InputLabel size='sm'>Status:</InputLabel>
+
+          <Select
+            placeholder='Pick status'
+            data={statusRecords}
+            {...form.getInputProps("status")}
+          />
         </Grid.Col>
 
         <Grid.Col span={12}>
