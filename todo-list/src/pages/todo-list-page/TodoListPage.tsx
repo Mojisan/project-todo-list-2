@@ -6,6 +6,7 @@ import DisplayTasks from "./components/DisplayTasks"
 import SearchTaskForm from "./components/forms/SearchTaskForm"
 import { useStatusesStore } from "../../store/useStatusesStore"
 import AddStatusForm from "./components/forms/AddStatus"
+import AddTagForm from "./components/forms/AddTag"
 
 const TodoListPage = () => {
   const { loadTasks } = useTasksStore()
@@ -18,9 +19,11 @@ const TodoListPage = () => {
 
   return (
     <Flex align='center' h='150vh' bg='blue' direction='column' gap='md'>
-      <SearchTaskForm />
-
       <AddStatusForm />
+
+      <AddTagForm />
+
+      <SearchTaskForm />
 
       <AddTaskForm />
 
