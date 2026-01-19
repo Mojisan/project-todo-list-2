@@ -1,25 +1,45 @@
-import { Autocomplete, Grid, Paper } from "@mantine/core"
+import { Button, Grid, Paper, Select, TextInput } from "@mantine/core"
 import { useTasksStore } from "../../../../store/useTasksStore"
+import type { IFilterTask } from "../../../../interface"
+import { useStatusesStore } from "../../../../store/useStatusesStore"
+import { useForm } from "@mantine/form"
 
 const SearchTaskForm = () => {
-  const { taskRecords, updateFilter } = useTasksStore()
-  const taskTitles = taskRecords.map((task) => task.title)
-  const handleSearchForm = (keyword: string) => {
-    updateFilter(keyword)
+  const { updateFilter, filter } = useTasksStore()
+  const { statusRecords } = useStatusesStore()
+  const form = useForm<IFilterTask>({
+    initialValues: {
+      keyword: filter.keyword,
+      status: filter.status,
+    },
+  })
+
+  const handleSearchForm = (filter: IFilterTask) => {
+    updateFilter(filter)
   }
 
   return (
     <Paper shadow='md' p='xl'>
-      <form>
+      <form onSubmit={form.onSubmit(handleSearchForm)}>
         <Grid>
           <Grid.Col span={12}>
-            <Autocomplete
+            <TextInput
               w={450}
               placeholder='Search task name'
-              limit={4}
-              data={taskTitles}
-              onChange={(value) => handleSearchForm(value)}
+              {...form.getInputProps("keyword")}
             />
+          </Grid.Col>
+
+          <Grid.Col span={12}>
+            <Select
+              placeholder='Pick status'
+              data={statusRecords}
+              {...form.getInputProps("status")}
+            />
+          </Grid.Col>
+
+          <Grid.Col span={4}>
+            <Button type='submit'>Search</Button>
           </Grid.Col>
         </Grid>
       </form>

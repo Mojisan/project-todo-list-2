@@ -7,3 +7,8 @@ export interface ITask {
 export interface IStatus {
   status: string
 }
+
+export interface IFilterTask {
+  keyword: string
+  status: string
+}

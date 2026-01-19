@@ -1,10 +1,10 @@
 import { create } from "zustand"
-import type { ITask } from "../interface"
+import type { IFilterTask, ITask } from "../interface"
 import { TASKS_KEY } from "../constant"
 
 type TasksState = {
   taskRecords: ITask[]
-  keyword: string
+  filter: IFilterTask
 }
 
 type TasksAction = {
@@ -12,12 +12,15 @@ type TasksAction = {
   loadTasks: () => void
   editTask: (id: number, task: ITask) => void
   deleteTask: (id: number) => void
-  updateFilter: (keyword: string) => void
+  updateFilter: (filter: IFilterTask) => void
 }
 
 const initialState: TasksState = {
   taskRecords: [],
-  keyword: "",
+  filter: {
+    keyword: "",
+    status: "",
+  },
 }
 
 export const useTasksStore = create<TasksState & TasksAction>((set, get) => ({
@@ -40,14 +43,17 @@ export const useTasksStore = create<TasksState & TasksAction>((set, get) => ({
 
   loadTasks: () => {
     try {
-      const keyword = get().keyword
+      const filter = get().filter
       const tasksString = localStorage.getItem(TASKS_KEY)
       const transformedTasks: ITask[] = tasksString
         ? JSON.parse(tasksString)
         : []
 
-      const filterTasks = transformedTasks.filter((task) =>
-        task.title.toLowerCase().includes(keyword),
+      const filterTasks = transformedTasks.filter(
+        (task) =>
+          (task.title.toLowerCase().includes(filter.keyword.toLowerCase()) ||
+            filter.keyword === "") &&
+          (filter.status === task.status || filter.status === ""),
       )
 
       set({ taskRecords: filterTasks })
@@ -88,8 +94,8 @@ export const useTasksStore = create<TasksState & TasksAction>((set, get) => ({
     }
   },
 
-  updateFilter: (keyword: string) => {
-    set({ keyword })
+  updateFilter: (filter: IFilterTask) => {
+    set({ filter })
 
     get().loadTasks()
   },

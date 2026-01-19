@@ -17,14 +17,7 @@ const TodoListPage = () => {
   }, [loadTasks, loadStatuses])
 
   return (
-    <Flex
-      justify='center'
-      align='center'
-      h='100vh'
-      bg='blue'
-      direction='column'
-      gap='md'
-    >
+    <Flex align='center' h='150vh' bg='blue' direction='column' gap='md'>
       <SearchTaskForm />
 
       <AddStatusForm />
