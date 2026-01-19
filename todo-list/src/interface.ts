@@ -2,6 +2,7 @@ export interface ITask {
   title: string
   content: string
   status: string
+  tags: string[]
 }
 
 export interface IStatus {

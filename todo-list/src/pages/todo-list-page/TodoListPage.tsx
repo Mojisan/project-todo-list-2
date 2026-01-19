@@ -7,15 +7,18 @@ import SearchTaskForm from "./components/forms/SearchTaskForm"
 import { useStatusesStore } from "../../store/useStatusesStore"
 import AddStatusForm from "./components/forms/AddStatus"
 import AddTagForm from "./components/forms/AddTag"
+import { useTagsStore } from "../../store/useTagsStore"
 
 const TodoListPage = () => {
-  const { loadTasks } = useTasksStore()
-  const { loadStatuses } = useStatusesStore()
+  const loadTasks = useTasksStore().loadTasks
+  const loadStatuses = useStatusesStore().loadStatuses
+  const loadTags = useTagsStore().loadTags
 
   useEffect(() => {
     loadTasks()
     loadStatuses()
-  }, [loadTasks, loadStatuses])
+    loadTags()
+  }, [loadTasks, loadStatuses, loadTags])
 
   return (
     <Flex align='center' h='150vh' bg='blue' direction='column' gap='md'>
