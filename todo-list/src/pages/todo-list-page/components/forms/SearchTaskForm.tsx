@@ -24,7 +24,13 @@ const SearchTaskForm = () => {
     },
   })
 
-  const handleSearchForm = (filter: IFilterTask) => {
+  const handleSearchForm = (values: IFilterTask) => {
+    const filter: IFilterTask = {
+      keyword: values.keyword || "",
+      status: values.status || "",
+      tags: values.tags || []
+    }
+
     updateFilter(filter)
   }
 
@@ -42,6 +48,7 @@ const SearchTaskForm = () => {
 
           <Grid.Col span={12}>
             <Select
+              clearable
               placeholder='Pick status'
               data={statusRecords}
               {...form.getInputProps("status")}
@@ -50,6 +57,7 @@ const SearchTaskForm = () => {
 
           <Grid.Col span={12}>
             <MultiSelect
+              clearable
               placeholder='Pick tags'
               data={tagsRecords}
               {...form.getInputProps("tags")}

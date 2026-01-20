@@ -52,12 +52,12 @@ export const useTasksStore = create<TasksState & TasksAction>((set, get) => ({
 
       const filterTasks = transformedTasks.filter(
         (task) =>
-          ((task.title.toLowerCase().includes(filter.keyword.toLowerCase()) ||
-            filter.keyword === "") &&
-            (filter.status === task.status || filter.status === "") &&
-            filter.tags.some((tag) => task.tags.includes(tag))) ||
-          filter.tags.length === 0,
-      )
+          ((task.title.toLowerCase().includes(filter.keyword.toLowerCase()) || filter.keyword === "") 
+      )).filter(
+        (task) => filter.status === "" ? transformedTasks : filter.status === task.status
+      )/* .filter(
+        (task) => filter.tags.some((tag) => task.tags.includes(tag) || filter.tags.length === 0)
+      ) */
 
       set({ taskRecords: filterTasks })
     } catch {
